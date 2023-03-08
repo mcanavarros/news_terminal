@@ -1,0 +1,171 @@
+Screen {
+    layers: base two;
+}
+
+
+TextLog {
+    background: $surface;
+    color: $text;
+    height: 20vh;
+    dock: bottom;
+    layer: two;
+    border-top: hkey $primary;
+    offset-y: 0;
+    transition: offset 400ms in_out_cubic;
+    padding: 0 1 1 1;
+}
+
+TextLog:focus {
+    offset: 0 0 !important;
+}
+
+TextLog.-hidden {
+    offset-y: 100%
+}
+
+#news_feed{
+    width: 62%;
+}
+
+#selection_display {
+    height: 15vh;
+    width: 38vw;
+}
+
+#price_tracker{
+    height: 20vh;
+    width: 38vw;
+}
+
+#buy_action{
+    height: 65vh;
+    width: 38vw;
+}
+
+
+SelectionDisplay {
+    background: $error-darken-3;
+}
+
+SelectionDisplay.-valid-pair {
+    background: $success-darken-3;
+}
+
+SelectionDisplay AutoComplete {
+    padding: 1 0;
+    background: $background-lighten-1;
+}
+
+SelectionDisplay Static {
+    text-style: bold;
+    content-align: center middle;
+    height: 1fr;
+}
+
+SelectionDisplay Button{
+    width: 1fr;
+    height: 1fr;
+}
+
+PriceTracker {
+    background: $background-lighten-2;
+}
+
+PriceTracker #price_layout{
+    background: $secondary-darken-2;
+    height: 1fr;
+}
+
+PriceTracker #price_layout > Static {
+    content-align: center middle;
+}
+
+PriceTracker #table_layout {
+    height: 3fr;
+}
+
+PriceTracker Vertical{
+    width: 1fr;
+}
+
+PriceTracker #header_col {
+    width: 10;
+}
+
+PriceTracker .header {
+    text-style: bold underline;
+}
+
+PriceTracker Static {
+    content-align: center middle;
+    height: 1fr;
+}
+
+PriceTracker .up {
+    background: $success-darken-2;
+}
+
+PriceTracker .down {
+    background: $error-lighten-1;
+}
+
+TreeNewsContent {
+    height: auto;
+    margin: 1 2;
+    border: $secondary;
+    layer: one;
+}
+
+TreeNewsContent Horizontal {
+    height: auto;
+}
+
+TreeNewsContent Vertical {
+    height: auto;
+}
+
+TreeNewsContent #source {
+    content-align: center middle;
+    text-style: bold;
+    margin: 0 2;
+    height: 100%;
+    width: 15%;
+}
+
+TreeNewsContent #title {
+    text-style: underline;
+    padding: 1 0;
+}
+
+
+TreeNewsContent #body {
+    padding: 1 0;
+    width: 75%;
+}
+
+TreeNewsContent #link {
+    padding: 1 0;
+}
+
+TreeNewsContent #time {
+    width: 35%;
+}
+
+TreeNewsContent #coin {
+    content-align: right middle;
+    width: 40%;
+}
+
+
+TreeNewsContent #delay{
+    text-style: italic;
+}
+
+TreeNewsContent:focus {
+    background: $background-lighten-2;
+}
+
+TreeNewsContent.selected {
+    border: double teal !important;
+}
+
