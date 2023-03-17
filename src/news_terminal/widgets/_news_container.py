@@ -4,93 +4,93 @@ from datetime import datetime
 
 from textual.app import ComposeResult, events
 from textual.containers import Container, Horizontal, Vertical
-from textual.message import Message, MessageTarget
+from textual.message import Message
 from textual.widget import Widget
 from textual.widgets import Label
 
-from news_terminal._news_websocket import (
-    NewsData,
+from news_terminal.news._twitter_monitor import subscribe_to_news_stream
+from news_terminal.news._websocket import (
     format_news_data,
     format_news_message,
     subscribe_to_wss,
 )
+from news_terminal.news.data_format import NewsData
 
 
-class TreeNewsContainer(Container):
-    """Container for Tree News Content."""
+class NewsContainer(Container):
+    """Container for News Content."""
 
     async def _add_new_entry(self) -> None:
         while True:
             json_msg = await self.news_queue.get()
             self.app.add_note(json_msg)  # type: ignore
             news_message = format_news_data(json_msg)
-            new_news = TreeNewsContent(news_message)
+            new_news = NewsContent(news_message)
             self.mount(new_news, before=0)
-            content_query = self.query(TreeNewsContent)
-            content_query.first().focus()
+            content_query = self.query(NewsContent)
+            # Focus new content if a content is already in focus
+            if isinstance(self.screen.focused, NewsContent):
+                content_query.first().focus()
 
             if len(self.children) > 50:
                 await content_query.last().remove()
 
     def on_mount(self):
         self.news_queue = asyncio.Queue()
+
         asyncio.create_task(
             subscribe_to_wss(self.news_queue, "news.treeofalpha.com/ws")
         )
+        asyncio.create_task(subscribe_to_news_stream(self.news_queue))
         asyncio.create_task(self._add_new_entry())
 
     def compose(self) -> ComposeResult:
-        yield TreeNewsContent(
+        yield NewsContent(
             format_news_data(
                 {
                     "title": "BeaultifulTest fasdf asdfasdfasdf adf adf adsf asdf asd fa dfasdf asdf asdf adf asdf 1 ",
-                    "url": "https://news.treeofalpha.com",
-                    "body": """wublockchain12: [https://finance.yahoo.com/news/republic-cancels-75-million-metaverse-060211106.html?guccounter=1&amp;guce_referrer=aHR0cHM6Ly9mb3Jlc2lnaHRuZXdzLnByby8&amp;guce_referrer_sig=AQAAAFODxVYXHGv1aW_0sLwInI1ODBuSX4tDTplvw9hZsG9lkZuAPw-B_lzrMK4uwEb2yzcn6ct1OG-D8uczUokonf5YccU40K-3u5NACTP4w41R7mwxp8Ic3lmkwTPOdzSOg9qCjywH4Kx3X1_lXRTjVWwRfGVLISPU2yca8iGKM17l] https://finance.yahoo.com/news/republic-cancels-75-million-metaverse-060211106.html?guccounter=1&guce_referrer=aHR0cHM6Ly9mb3Jlc2lnaHRuZXdzLnByby8&guce_referrer_sig=AQAAAFODxVYXHGv1aW_0sLwInI1ODBuSX4tDTplvw9hZsG9lkZuAPw-B_lzrMK4uwEb2yzcn6ct1OG-D8uczUokonf5YccU40K-3u5NACTP4w41R7mwxp8Ic3lmkwTPOdzSOg9qCjywH4Kx3X1_lXRTjVWwRfGVLISPU2yca8iGKM17l""",
+                    "url": "https://twitter.com/AnciliaInc/status/1634712824042905600",
+                    "body": """Test""",
                     "source": "twitter",
                     "time": datetime.timestamp(datetime.now()) * 1000,
-                    "coin": "ETH",
+                    "coin": "BTC",
                     "_id": 1,
                     "actions": [
                         {
                             "action": "BINFUT_ATOMUSDT",
-                            "title": "ETHUSDT PERP",
-                            "icon": "https://news.treeofalpha.com/static/images/binance_icon.png",
-                        },
-                        {
-                            "action": "BIN_ATOM_USDT",
-                            "title": "ATOM/USDT",
-                            "icon": "https://news.treeofalpha.com/static/images/binance_icon.png",
-                        },
-                        {
-                            "action": "BIN_ATOM_BTC",
-                            "title": "ATOM/BTC",
-                            "icon": "https://news.treeofalpha.com/static/images/binance_icon.png",
-                        },
-                        {
-                            "action": "BIN_ATOM_BUSD",
-                            "title": "ATOM/BUSD",
-                            "icon": "https://news.treeofalpha.com/static/images/binance_icon.png",
-                        },
-                        {
-                            "action": "BIN_ATOM_BNB",
-                            "title": "ATOM/BNB",
-                            "icon": "https://news.treeofalpha.com/static/images/binance_icon.png",
-                        },
-                        {
-                            "action": "BIN_ATOM_ETH",
-                            "title": "ATOM/ETH",
+                            "title": "BTCUSDT PERP",
                             "icon": "https://news.treeofalpha.com/static/images/binance_icon.png",
                         },
                     ],
                 }
             )
         )
-        yield TreeNewsContent(
+        yield NewsContent(
             format_news_data(
                 {
                     "title": "BeaultifulTest fasdf asdfasdfasdf adf adf adsf asdf asd fa dfasdf asdf asdf adf asdf 1 ",
-                    "url": "https://news.treeofalpha.com",
-                    "body": """wublockchain12: [https://finance.yahoo.com/news/republic-cancels-75-million-metaverse-060211106.html?guccounter=1&amp;guce_referrer=aHR0cHM6Ly9mb3Jlc2lnaHRuZXdzLnByby8&amp;guce_referrer_sig=AQAAAFODxVYXHGv1aW_0sLwInI1ODBuSX4tDTplvw9hZsG9lkZuAPw-B_lzrMK4uwEb2yzcn6ct1OG-D8uczUokonf5YccU40K-3u5NACTP4w41R7mwxp8Ic3lmkwTPOdzSOg9qCjywH4Kx3X1_lXRTjVWwRfGVLISPU2yca8iGKM17l] https://finance.yahoo.com/news/republic-cancels-75-million-metaverse-060211106.html?guccounter=1&guce_referrer=aHR0cHM6Ly9mb3Jlc2lnaHRuZXdzLnByby8&guce_referrer_sig=AQAAAFODxVYXHGv1aW_0sLwInI1ODBuSX4tDTplvw9hZsG9lkZuAPw-B_lzrMK4uwEb2yzcn6ct1OG-D8uczUokonf5YccU40K-3u5NACTP4w41R7mwxp8Ic3lmkwTPOdzSOg9qCjywH4Kx3X1_lXRTjVWwRfGVLISPU2yca8iGKM17l""",
+                    "url": "https://twitter.com/AnciliaInc/status/1634712824042905600",
+                    "body": """Test""",
+                    "source": "twitter",
+                    "time": datetime.timestamp(datetime.now()) * 1000,
+                    "coin": "BTC",
+                    "_id": 1,
+                    "actions": [
+                        {
+                            "action": "BINFUT_ATOMUSDT",
+                            "title": "BTCUSDT PERP",
+                            "icon": "https://news.treeofalpha.com/static/images/binance_icon.png",
+                        },
+                    ],
+                }
+            )
+        )
+        yield NewsContent(
+            format_news_data(
+                {
+                    "title": "BeaultifulTest fasdf asdfasdfasdf adf adf adsf asdf asd fa dfasdf asdf asdf adf asdf 1 ",
+                    "url": "https://twitter.com/AnciliaInc/status/1634712824042905600",
+                    "body": """Test""",
                     "source": "twitter",
                     "time": datetime.timestamp(datetime.now()) * 1000,
                     "coin": "BTC",
@@ -107,18 +107,18 @@ class TreeNewsContainer(Container):
         )
 
     def clear_selection(self):
-        self.query(TreeNewsContent).remove_class("selected")
+        self.query(NewsContent).remove_class("selected")
 
 
-class TreeNewsContent(Widget):
-    """Widget to represent tree news content."""
+class NewsContent(Widget):
+    """Widget to represent news content."""
 
     class Selected(Message):
         """Message sent when content selected"""
 
-        def __init__(self, sender: MessageTarget, data: NewsData) -> None:
+        def __init__(self, data: NewsData) -> None:
             self.data = data
-            super().__init__(sender)
+            super().__init__()
 
     def __init__(self, data: NewsData) -> None:
         """Initialize shared variables."""
@@ -152,10 +152,14 @@ class TreeNewsContent(Widget):
         """On click event."""
         self._select()
 
-    async def _on_key(self, event: events.Key) -> None:
+    async def on_key(self, event: events.Key) -> None:
         """On key event."""
         if event.key == "enter":
             self._select()
+        elif event.key == "down":
+            self.screen.focus_next()
+        elif event.key == "up":
+            self.screen.focus_previous()
 
     def _select(self) -> None:
         """Select content."""
@@ -167,4 +171,4 @@ class TreeNewsContent(Widget):
             final_value=1.0,
         )
         self.add_class("selected")
-        self.post_message_no_wait(self.Selected(self, self.data))
+        self.post_message(self.Selected(self.data))

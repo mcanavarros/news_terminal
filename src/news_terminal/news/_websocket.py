@@ -3,21 +3,11 @@ from asyncio import Queue
 from datetime import datetime
 import json
 import re
-from typing import TypedDict
 
 from websockets.client import connect
 from websockets.exceptions import ConnectionClosedError, InvalidStatusCode
 
-
-class NewsData(TypedDict):
-    title: str
-    link: str
-    body: str
-    source: str
-    time: datetime
-    coin: str
-    tree_id: int
-    actions: list[dict]
+from news_terminal.news.data_format import NewsData
 
 
 async def subscribe_to_wss(wss_queue: Queue, url: str) -> None:
@@ -40,7 +30,9 @@ async def subscribe_to_wss(wss_queue: Queue, url: str) -> None:
                 InvalidStatusCode,
             ) as e:
                 print(e)
-                await subscribe_to_wss(wss_queue, url)
+                break
+    await asyncio.sleep(1)
+    await subscribe_to_wss(wss_queue, url)
 
 
 def _format_links_for_click(text):
@@ -52,6 +44,7 @@ def _format_links_for_click(text):
 def _replace_with_click(match) -> str:
     """Replace the matched url with a click format."""
     url = match.group(0)
+    url = re.sub(r"[{}|^[\]`]", "", url)
     link = _nice_link_format(url)
     return f"[@click=app.open_link('{url}')]{link}[/]"
 

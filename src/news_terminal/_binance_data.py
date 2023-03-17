@@ -1,6 +1,5 @@
 from unicorn_binance_websocket_api.manager import BinanceWebSocketApiManager
 from binance.client import Client
-from pprint import pprint
 
 from collections import defaultdict
 
@@ -25,10 +24,13 @@ DISABLED_ENDS = ("BEAR", "DOWN", "UP", "BULL")
 
 
 def subscribe_to_market(
-    api_manager: BinanceWebSocketApiManager | None, stream: None | str, market: str
+    api_manager: BinanceWebSocketApiManager | None,
+    stream: None | str,
+    market: str,
+    exchange: str = "binance.com-futures",
 ) -> tuple[BinanceWebSocketApiManager, str]:
     new_api_manager = BinanceWebSocketApiManager(
-        exchange="binance.com-futures", output_default="dict", high_performance=True
+        exchange=exchange, output_default="dict", high_performance=True
     )
     if stream and api_manager:
         api_manager.stop_manager_with_all_streams()
@@ -68,7 +70,12 @@ def build_actions_data() -> dict:
             continue
 
         for f_pair in future_pairs:
-            if ticker == f_pair[:-4]:
+
+            compare_pair = f_pair
+            if f_pair.startswith("1000"):
+                compare_pair = f_pair[4:]
+
+            if ticker == compare_pair[:-4]:
                 temp_action = {}
                 formated_f_pair = f"{f_pair[:-4]}{f_pair[-4:]}"
                 temp_action["title"] = f"{formated_f_pair} PERP"

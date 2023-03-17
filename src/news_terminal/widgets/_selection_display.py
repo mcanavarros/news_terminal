@@ -2,7 +2,7 @@
 from textual.app import ComposeResult
 from textual.containers import Horizontal
 from textual.css.query import NoMatches
-from textual.message import Message, MessageTarget
+from textual.message import Message
 from textual.reactive import reactive
 from textual.widget import Widget
 from textual.widgets import Button, Input, Static
@@ -20,16 +20,16 @@ class SelectionDisplay(Widget):
     class ButtonSelected(Message):
         """Message sent when button is selected"""
 
-        def __init__(self, sender: MessageTarget, pair: str) -> None:
+        def __init__(self, pair: str) -> None:
+            super().__init__()
             self.pair = pair
-            super().__init__(sender)
 
     class SearchComplete(Message):
         """Message sent when search is complete"""
 
-        def __init__(self, sender: MessageTarget, actions: list[dict]) -> None:
+        def __init__(self, actions: list[dict]) -> None:
+            super().__init__()
             self.actions = actions
-            super().__init__(sender)
 
     def compose(self) -> ComposeResult:
         self.action_data = build_actions_data()
@@ -49,9 +49,9 @@ class SelectionDisplay(Widget):
             self.query_one("#pair_text", Static).update(new_pair)
             self.add_class("-valid-pair")
 
-    async def update_actions(self, actions: list[dict]) -> None:
+    def update_actions(self, actions: list[dict]) -> None:
         try:
-            await self.query("#button_actions > Button").remove()
+            self.query("#button_actions > Button").remove()
         except NoMatches:
             pass
 
@@ -64,12 +64,16 @@ class SelectionDisplay(Widget):
                 continue
             action_button = Button(action_label)
             action_button.can_focus = False
-            await self.query_one("#button_actions", Horizontal).mount(action_button)
+            self.query_one("#button_actions", Horizontal).mount(action_button)
 
-    async def on_auto_complete_selected(self, message: AutoComplete.Selected) -> None:
+    def on_auto_complete_selected(self, message: AutoComplete.Selected) -> None:
         actions = self.action_data[str(message.item.main)]
         self.query_one(Input).value = ""
-        await self.post_message(self.SearchComplete(self, actions))
+        self.post_message(self.SearchComplete(actions))
 
     def on_button_pressed(self, pressed: Button.Pressed) -> None:
-        self.post_message_no_wait(self.ButtonSelected(self, str(pressed.button.label)))
+        self.post_message(self.ButtonSelected(str(pressed.button.label)))
+
+    def on_input_submitted(self, event: Input.Submitted):
+        if event.value == "":
+            self.screen.focus_previous()

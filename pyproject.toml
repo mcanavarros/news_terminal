@@ -9,11 +9,13 @@ packages = [{include = "news_terminal", from="src"}]
 python = "^3.10"
 playwright = "^1.30.0"
 websockets = "^10.4"
-textual = {extras = ["dev"], version = "^0.11.1"}
+textual = {extras = ["dev"], version = "^0.15.1"}
 rich-pixels = "^2.1.1"
 unicorn-binance-websocket-api = "^1.42.0"
-textual-autocomplete = "^2.0.1b0"
 python-binance = "^1.0.17"
+tweepy = {extras = ["async"], version = "^4.13.0"}
+python-decouple = "^3.8"
+textual-autocomplete = {git = "https://github.com/UmBsublime/textual-autocomplete", rev = "textual_v0.14.0_compat"}
 
 
 [tool.poetry.group.dev.dependencies]

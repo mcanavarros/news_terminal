@@ -51,19 +51,22 @@ class PriceTracker(Widget):
         self.clear_values()
         asyncio.create_task(self._update_values())
 
-    async def subscrite_to_action(self, market: str) -> None:
+    def subscribe_to_action(self, market: str) -> None:
         if market.endswith("PERP"):
             market = market[:-5].lower()
+            exchange = "binance.com-futures"
         else:
-            market.replace("/", "")
+            market = market.replace("/", "").lower()
+            exchange = "binance.com"
 
         if market == self._current_market:
             return
+
         self._current_market = market
         self.clear_values()
 
         self._binance_api_manager, self._main_stream = subscribe_to_market(
-            self._binance_api_manager, self._main_stream, market
+            self._binance_api_manager, self._main_stream, market, exchange
         )
 
     def clear_values(self) -> None:
