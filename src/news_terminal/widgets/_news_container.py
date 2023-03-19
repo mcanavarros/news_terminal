@@ -20,6 +20,27 @@ from news_terminal.news.data_format import NewsData
 class NewsContainer(Container):
     """Container for News Content."""
 
+    def __init__(
+        self,
+        *children: Widget,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+        disabled: bool = False,
+    ) -> None:
+        super().__init__(
+            *children, name=name, id=id, classes=classes, disabled=disabled
+        )
+        self.news_queue = asyncio.Queue()
+        self._task_list = {}
+        self._task_list["subscribe_to_wss"] = asyncio.create_task(
+            subscribe_to_wss(self.news_queue, "news.treeofalpha.com/ws")
+        )
+        self._task_list["subscribe_to_news_stream"] = asyncio.create_task(
+            subscribe_to_news_stream(self.news_queue)
+        )
+        self._task_list["add_new_entry"] = asyncio.create_task(self._add_new_entry())
+
     async def _add_new_entry(self) -> None:
         while True:
             json_msg = await self.news_queue.get()
@@ -34,15 +55,6 @@ class NewsContainer(Container):
 
             if len(self.children) > 50:
                 await content_query.last().remove()
-
-    def on_mount(self):
-        self.news_queue = asyncio.Queue()
-
-        asyncio.create_task(
-            subscribe_to_wss(self.news_queue, "news.treeofalpha.com/ws")
-        )
-        asyncio.create_task(subscribe_to_news_stream(self.news_queue))
-        asyncio.create_task(self._add_new_entry())
 
     def compose(self) -> ComposeResult:
         yield NewsContent(

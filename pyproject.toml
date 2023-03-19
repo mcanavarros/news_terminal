@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "news-terminal"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "Personal news terminal"
+authors = ["Thr3ee"]
 packages = [{include = "news_terminal", from="src"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 playwright = "^1.30.0"
 websockets = "^10.4"
 textual = {extras = ["dev"], version = "^0.15.1"}
