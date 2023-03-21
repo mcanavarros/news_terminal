@@ -6,6 +6,8 @@ from textual.screen import Screen
 from textual.widget import Widget
 from textual.widgets import Button, Input, Label, ListItem, ListView, Static, Switch
 
+from news_terminal.widgets._label_item import LabelItem
+
 
 class PositionManager(Widget):
     """Widget to open positions on exchange."""
@@ -108,28 +110,6 @@ class RadioBox(ListView):
         )
         self.styles.layout = "horizontal"
         self.can_focus = False
-
-
-class LabelItem(ListItem):
-    DEFAULT_CSS = """
-    LabelItem Label{
-        content-align: center middle;
-    }
-    """
-
-    def __init__(
-        self,
-        text: str,
-        *children: Widget,
-        name: str | None = None,
-        id: str | None = None,
-        classes: str | None = None,
-    ) -> None:
-        super().__init__(*children, name=name, id=id, classes=classes)
-        self.text = text
-
-    def compose(self) -> ComposeResult:
-        yield Label(self.text)
 
 
 class ConfirmPositionDialog(Screen):

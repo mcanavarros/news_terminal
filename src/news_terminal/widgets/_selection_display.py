@@ -8,7 +8,7 @@ from textual.widget import Widget
 from textual.widgets import Button, Input, Static
 from textual_autocomplete import AutoComplete, Dropdown, DropdownItem
 
-from news_terminal._binance_data import build_actions_data
+from news_terminal._binance_data import ACTIONS_DATA
 
 SUPPORTED_ACTION_TITLES = ["PERP", "USDT", "BUSD"]
 
@@ -31,8 +31,20 @@ class SelectionDisplay(Widget):
             super().__init__()
             self.actions = actions
 
+    def __init__(
+        self,
+        *children: Widget,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+        disabled: bool = False,
+    ) -> None:
+        super().__init__(
+            *children, name=name, id=id, classes=classes, disabled=disabled
+        )
+        self.action_data = ACTIONS_DATA
+
     def compose(self) -> ComposeResult:
-        self.action_data = build_actions_data()
         dropdown_items = [
             DropdownItem(main=ticker) for ticker in self.action_data.keys()
         ]
@@ -58,13 +70,14 @@ class SelectionDisplay(Widget):
         if not actions:
             return
 
-        for action in actions:
-            action_label = action["title"]
-            if not action_label[-4:] in SUPPORTED_ACTION_TITLES:
-                continue
-            action_button = Button(action_label)
-            action_button.can_focus = False
-            self.query_one("#button_actions", Horizontal).mount(action_button)
+        with self.app.batch_update():
+            for action in actions:
+                action_label = action["title"]
+                if not action_label[-4:] in SUPPORTED_ACTION_TITLES:
+                    continue
+                action_button = Button(action_label)
+                action_button.can_focus = False
+                self.query_one("#button_actions", Horizontal).mount(action_button)
 
     def on_auto_complete_selected(self, message: AutoComplete.Selected) -> None:
         actions = self.action_data[str(message.item.main)]

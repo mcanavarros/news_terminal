@@ -88,3 +88,6 @@ def build_actions_data() -> dict:
             actions_data[ticker].append(temp_action)
 
     return actions_data
+
+
+ACTIONS_DATA = build_actions_data()

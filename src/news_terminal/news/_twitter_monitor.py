@@ -21,7 +21,7 @@ class NewsStream(AsyncStreamingClient):
         data["title"] = _title.data.name  # type: ignore
         data["body"] = tweet.text
         data["link"] = f"https://twitter.com/twitter/statuses/{tweet.id}"
-        data["source"] = "twitter"
+        data["source"] = "terminal-twitter"
         data["time"] = tweet.created_at.timestamp() * 1000
         data["_id"] = 0
         await self.tweet_queue.put(data)
@@ -34,12 +34,21 @@ async def subscribe_to_news_stream(news_queue: Queue):
 
 
 async def add_tweet_user(username) -> None:
-    await AsyncStreamingClient(TWITTER_BEARER_TOKEN).add_rules(f"from:{username}")
+    await AsyncStreamingClient(TWITTER_BEARER_TOKEN).add_rules(
+        StreamRule(f"from:{username}")
+    )
 
 
 async def get_current_rules() -> dict:
+    """Get current rules from twitter api.
+
+    Returns:
+        dict[str][float]: Dict with user name and rule id
+    """
     rules = await AsyncStreamingClient(TWITTER_BEARER_TOKEN).get_rules()
     rule_dict = {}
+    if not rules.data:  # type: ignore
+        return {}
     for rule in rules.data:  # type: ignore
         rule_dict[rule.value.split(":")[-1]] = rule.id
     return rule_dict

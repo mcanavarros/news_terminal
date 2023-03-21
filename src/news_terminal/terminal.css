@@ -1,5 +1,6 @@
 Screen {
     layers: base two;
+    overflow: hidden;
 }
 
 
@@ -22,6 +23,29 @@ TextLog:focus {
 TextLog.-hidden {
     offset-y: 100%
 }
+
+ConfigPanel {
+    padding: 0 1 1 1;
+    width: 40;
+    background: $panel;
+    layer: two;
+	dock: left;
+    transition: offset 500ms in_out_cubic;
+    offset-x: 0;
+}
+
+ConfigPanel:focus {
+    offset: 0 0 !important;
+}
+
+ConfigPanel.-hidden{
+    offset-x: -100%
+}
+
+ConfigPanel ListView {
+    padding: 1 1;
+}
+
 
 #news_feed{
     width: 62%;

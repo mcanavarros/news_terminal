@@ -85,7 +85,7 @@ def format_news_data(news_message: dict) -> NewsData:
         _coin = _actions[-1]["title"].split("/")[0]
 
     if news_message.get("type", None) == "direct":
-        _source = "twitter"
+        _source = "tree-twitter"
 
     return NewsData(
         title=_title,

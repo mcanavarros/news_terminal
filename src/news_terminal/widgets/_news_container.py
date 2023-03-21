@@ -63,17 +63,10 @@ class NewsContainer(Container):
                     "title": "BeaultifulTest fasdf asdfasdfasdf adf adf adsf asdf asd fa dfasdf asdf asdf adf asdf 1 ",
                     "url": "https://twitter.com/AnciliaInc/status/1634712824042905600",
                     "body": """Test""",
-                    "source": "twitter",
+                    "type": "direct",
                     "time": datetime.timestamp(datetime.now()) * 1000,
                     "coin": "BTC",
                     "_id": 1,
-                    "actions": [
-                        {
-                            "action": "BINFUT_ATOMUSDT",
-                            "title": "BTCUSDT PERP",
-                            "icon": "https://news.treeofalpha.com/static/images/binance_icon.png",
-                        },
-                    ],
                 }
             )
         )
@@ -183,4 +176,5 @@ class NewsContent(Widget):
             final_value=1.0,
         )
         self.add_class("selected")
+        self.app.set_focus(self)
         self.post_message(self.Selected(self.data))
