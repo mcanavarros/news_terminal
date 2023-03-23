@@ -87,6 +87,11 @@ def format_news_data(news_message: dict) -> NewsData:
     if news_message.get("type", None) == "direct":
         _source = "tree-twitter"
 
+    if _source.lower() == "blogs":
+        title_split = _title.split(":")
+        _title = title_split[0].strip()
+        _body = "".join(title_split[1:]).strip()
+
     return NewsData(
         title=_title,
         link=_link,

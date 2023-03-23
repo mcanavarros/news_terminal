@@ -162,6 +162,14 @@ PositionManager .value {
     content-align: center middle;
 }
 
+PositionManager #usdt_label {
+    width: 1fr;
+}
+
+PositionManager #current_usdt {
+    width: 3fr;
+}
+
 PositionManager #bid_label{
     width: 1fr;
 }
@@ -227,6 +235,8 @@ NewsContent #source {
 NewsContent #title {
     text-style: underline;
     padding: 1 0;
+    height: auto;
+    width: 80%;
 }
 
 
@@ -259,5 +269,23 @@ NewsContent:focus {
 
 NewsContent.selected {
     border: double teal !important;
+}
+
+ConfirmPositionDialog #dialog {
+    grid-size: 2;
+    grid-gutter: 1 2;
+    padding: 0 40;
+}
+
+ConfirmPositionDialog Label {
+    text-style: bold;
+    column-span: 2;
+    content-align: center bottom;
+    width: 100%;
+    height: 100%;
+}
+
+ConfirmPositionDialog Button{
+    width: 100%;
 }
 

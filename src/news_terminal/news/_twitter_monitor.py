@@ -6,7 +6,6 @@ from tweepy.asynchronous.client import AsyncClient
 from tweepy.asynchronous.streaming import AsyncStreamingClient
 
 from news_terminal.config import TWITTER_BEARER_TOKEN
-from news_terminal.news.data_format import NewsData
 
 
 class NewsStream(AsyncStreamingClient):

@@ -25,13 +25,19 @@ class NewsTerminalApp(App):
     BINDINGS = [
         ("f1", "app.toggle_class('TextLog', '-hidden')", "Logger"),
         ("f2", "app.toggle_class('ConfigPanel', '-hidden')", "Config"),
+        ("n", "focus_news", "Focus Last News"),
         ("f", "focus_search", "Focus Search"),
         ("w", "focus_long", "Focus Long"),
         ("s", "focus_short", "Focus Short"),
-        ("n", "focus_news", "Focus Last News"),
+        ("l", "increase_leverage", "Increase Leverage"),
+        ("h", "reduce_leverage", "Reduce Leverage"),
+        ("b", "bell", "test"),
     ]
 
-    def add_note(self, renderable: RenderableType) -> None:
+    def on_mount(self) -> None:
+        self.action_focus_news()
+
+    def log_news(self, renderable: RenderableType) -> None:
         self.query_one(TextLog).write(renderable)
 
     def compose(self) -> ComposeResult:
@@ -100,8 +106,16 @@ class NewsTerminalApp(App):
     def action_focus_short(self) -> None:
         self.query_one("PositionManager #open_short").focus()
 
+    def action_increase_leverage(self) -> None:
+        self.query_one(PositionManager).increase_leverage()
+
+    def action_reduce_leverage(self) -> None:
+        self.query_one(PositionManager).reduce_leverage()
+
     async def action_quit(self) -> None:
-        self.query_one(PriceTracker).close_binance_manager()
+        price_tracker = self.query_one(PriceTracker)
+        if price_tracker:
+            price_tracker.close_binance_manager()
         return await super().action_quit()
 
 

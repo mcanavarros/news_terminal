@@ -44,7 +44,7 @@ class NewsContainer(Container):
     async def _add_new_entry(self) -> None:
         while True:
             json_msg = await self.news_queue.get()
-            self.app.add_note(json_msg)  # type: ignore
+            self.app.log_news(json_msg)  # type: ignore
             news_message = format_news_data(json_msg)
             new_news = NewsContent(news_message)
             self.mount(new_news, before=0)
@@ -161,9 +161,9 @@ class NewsContent(Widget):
         """On key event."""
         if event.key == "enter":
             self._select()
-        elif event.key == "down":
+        elif event.key == "j":
             self.screen.focus_next()
-        elif event.key == "up":
+        elif event.key == "k":
             self.screen.focus_previous()
 
     def _select(self) -> None:
