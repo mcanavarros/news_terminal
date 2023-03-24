@@ -161,10 +161,10 @@ class NewsContent(Widget):
         """On key event."""
         if event.key == "enter":
             self._select()
-        elif event.key == "j":
-            self.screen.focus_next()
-        elif event.key == "k":
-            self.screen.focus_previous()
+        elif event.key == "w":
+            self.screen.focus_previous("NewsContent")
+        elif event.key == "s":
+            self.screen.focus_next("NewsContent")
 
     def _select(self) -> None:
         """Select content."""

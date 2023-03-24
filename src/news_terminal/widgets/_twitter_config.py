@@ -1,14 +1,13 @@
 """Module with twitter config."""
 from textual.app import ComposeResult, events
-from textual.containers import Vertical
-from textual.widget import Widget
-from textual.widgets import Input, Label, ListItem, ListView
+from textual.containers import Container
+from textual.widgets import Input, ListView
 
 from news_terminal.news import _twitter_monitor
 from news_terminal.widgets._label_item import LabelItem
 
 
-class TwitterConfig(Widget):
+class TwitterConfig(Container):
     async def on_mount(self):
         await self.update_tracked_users()
 
@@ -21,10 +20,8 @@ class TwitterConfig(Widget):
                 user_list.append(LabelItem(user))
 
     def compose(self) -> ComposeResult:
-        yield Vertical(
-            Input(placeholder="Track username...", id="track_user"),
-            ListView(id="tracked_users"),
-        )
+        yield Input(placeholder="Track username...", id="track_user")
+        yield ListView(id="tracked_users")
 
     async def on_key(self, event: events.Key) -> None:
         if event.key == "delete":

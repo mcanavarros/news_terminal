@@ -9,7 +9,7 @@ packages = [{include = "news_terminal", from="src"}]
 python = "^3.11"
 playwright = "^1.30.0"
 websockets = "^10.4"
-textual = {extras = ["dev"], version = "^0.15.1"}
+textual = {extras = ["dev"], version = "^0.16.0"}
 rich-pixels = "^2.1.1"
 unicorn-binance-websocket-api = "^1.42.0"
 python-binance = "^1.0.17"

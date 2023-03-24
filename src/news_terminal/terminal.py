@@ -4,17 +4,14 @@ from subprocess import PIPE, Popen
 from rich.console import RenderableType
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal, Vertical
-from textual.widgets import Footer, Header, Input, Placeholder, TextLog
+from textual.widgets import Footer, Header, Input, TextLog
 
 from news_terminal._binance_data import ACTIONS_DATA
+from news_terminal.widgets._config import ConfigPanel
+from news_terminal.widgets._news_container import NewsContainer, NewsContent
+from news_terminal.widgets._position_manager import PositionManager
 from news_terminal.widgets._price_tracker import PriceTracker
 from news_terminal.widgets._selection_display import SelectionDisplay
-from news_terminal.widgets._position_manager import PositionManager
-from news_terminal.widgets._news_container import (
-    NewsContainer,
-    NewsContent,
-)
-from news_terminal.widgets._config import ConfigPanel
 
 
 class NewsTerminalApp(App):
@@ -23,25 +20,26 @@ class NewsTerminalApp(App):
     TITLE = "News Terminal"
     CSS_PATH = "terminal.css"
     BINDINGS = [
-        ("f1", "app.toggle_class('TextLog', '-hidden')", "Logger"),
+        ("f1", "app.toggle_class('#news_log', '-hidden')", "News Log"),
         ("f2", "app.toggle_class('ConfigPanel', '-hidden')", "Config"),
-        ("n", "focus_news", "Focus Last News"),
-        ("f", "focus_search", "Focus Search"),
-        ("w", "focus_long", "Focus Long"),
-        ("s", "focus_short", "Focus Short"),
+        ("a", "focus_news", "Focus Last News"),
+        ("d", "focus_search", "Focus Search"),
+        ("k", "focus_long", "Focus Long"),
+        ("j", "focus_short", "Focus Short"),
         ("l", "increase_leverage", "Increase Leverage"),
         ("h", "reduce_leverage", "Reduce Leverage"),
-        ("b", "bell", "test"),
     ]
 
     def on_mount(self) -> None:
         self.action_focus_news()
 
     def log_news(self, renderable: RenderableType) -> None:
-        self.query_one(TextLog).write(renderable)
+        self.query_one("#news_log", TextLog).write(renderable)
 
     def compose(self) -> ComposeResult:
-        logger = TextLog(classes="-hidden", wrap=False, highlight=True, markup=True)
+        logger = TextLog(
+            classes="-hidden", wrap=False, highlight=True, markup=True, id="news_log"
+        )
         logger.can_focus = False
         yield ConfigPanel(classes="-hidden")
         yield Header(show_clock=True)
@@ -93,6 +91,9 @@ class NewsTerminalApp(App):
     def subscribe_to_action(self, pair: str) -> None:
         self.query_one(PositionManager).pair_selected(pair)
         self.query_one(PriceTracker).subscribe_to_action(pair)
+
+    def log_binance(self, renderable: RenderableType) -> None:
+        self.query_one(PositionManager).log_binance(renderable)
 
     def action_focus_news(self) -> None:
         self.set_focus(self.query(NewsContent).first())

@@ -1,5 +1,5 @@
 Screen {
-    layers: base two;
+    layers: base above;
     overflow: hidden;
 }
 
@@ -9,8 +9,10 @@ TextLog {
     color: $text;
     height: 20vh;
     dock: bottom;
-    layer: two;
-    border-top: hkey $primary;
+    layer: above;
+    border-top: tall $primary;
+    border-left: tall $primary;
+    border-right: tall $primary;
     offset-y: 0;
     transition: offset 400ms in_out_cubic;
     padding: 0 1 1 1;
@@ -26,13 +28,27 @@ TextLog.-hidden {
 
 ConfigPanel {
     padding: 0 1 1 1;
-    width: 40;
+    width: 20vw;
     background: $panel;
-    layer: two;
+    layer: above;
 	dock: left;
     transition: offset 500ms in_out_cubic;
     offset-x: 0;
 }
+
+TabbedContent {
+    height: 100%;
+}
+
+TwitterConfig {
+    height: 60;
+
+}
+
+TwitterConfig ListView {
+    height: 80%;
+}
+
 
 ConfigPanel:focus {
     offset: 0 0 !important;
@@ -53,17 +69,14 @@ ConfigPanel ListView {
 
 #selection_display {
     height: 15%;
-    width: 38%;
 }
 
 #price_tracker {
     height: 20%;
-    width: 38%;
 }
 
 #buy_action {
     height: 65%;
-    width: 38%;
 }
 
 
@@ -201,12 +214,47 @@ PositionManager Button:focus{
 }
 
 PositionManager #open_long {
-    dock: left;
+    dock: right;
 }
 
 PositionManager #open_short {
+    dock: left;
+}
+
+PositionManager TextLog {
+    height: 50%;
+    border: tall $secondary;
+}
+
+ConfirmPositionDialog {
+    display: none;
+    dock: top;
+    offset-y: 5;
+    layer: above;
+    border: dashed $secondary;
+    border-title-align: center;
+    background: $accent-darken-3;
+    height: 20vh;
+    padding: 3 5;
+}
+
+ConfirmPositionDialog.-display-dialog{
+    display: block;
+}
+
+ConfirmPositionDialog Label {
+    text-style: bold;
+    content-align: center middle;
+}
+
+ConfirmPositionDialog #confirm{
+    dock: left;
+}
+
+ConfirmPositionDialog #cancel{
     dock: right;
 }
+
 
 
 NewsContent {
@@ -270,22 +318,3 @@ NewsContent:focus {
 NewsContent.selected {
     border: double teal !important;
 }
-
-ConfirmPositionDialog #dialog {
-    grid-size: 2;
-    grid-gutter: 1 2;
-    padding: 0 40;
-}
-
-ConfirmPositionDialog Label {
-    text-style: bold;
-    column-span: 2;
-    content-align: center bottom;
-    width: 100%;
-    height: 100%;
-}
-
-ConfirmPositionDialog Button{
-    width: 100%;
-}
-
