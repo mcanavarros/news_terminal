@@ -24,12 +24,11 @@ class BinanceTrader(object):
                 testnet=True,
             )
         else:
-            pass
-            # self.client = Client(
-            #     api_key=BINANCE_KEY,  # type: ignore
-            #     api_secret=BINANCE_SECRET,  # type: ignore
-            #     testnet=False,
-            # )
+            self.client = Client(
+                api_key=BINANCE_KEY,  # type: ignore
+                api_secret=BINANCE_SECRET,  # type: ignore
+                testnet=False,
+            )
 
         self.symbols_precision = self.get_all_symbol_precision()
 

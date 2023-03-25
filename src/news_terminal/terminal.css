@@ -180,7 +180,13 @@ PositionManager #usdt_label {
 }
 
 PositionManager #current_usdt {
-    width: 3fr;
+    width: 2fr;
+}
+
+PositionManager #update_holdings {
+    width: 1fr;
+    border: none;
+    background: $surface;
 }
 
 PositionManager #bid_label{
@@ -203,13 +209,13 @@ PositionManager #position_buttons {
     width: 1fr;
 }
 
-PositionManager Button{
+PositionManager #position_buttons > Button{
     margin-top: 1;
     height: 5;
     width: 48%
 }
 
-PositionManager Button:focus{
+PositionManager #position_buttons > Button:focus{
     tint: yellow 30%;
 }
 
@@ -224,6 +230,13 @@ PositionManager #open_short {
 PositionManager TextLog {
     height: 50%;
     border: tall $secondary;
+}
+
+PositionManager #testnet_label {
+    offset-x: 60vw;
+    offset-y: 1vw;
+    text-style: bold;
+    content-align-vertical: middle;
 }
 
 ConfirmPositionDialog {
@@ -245,6 +258,12 @@ ConfirmPositionDialog.-display-dialog{
 ConfirmPositionDialog Label {
     text-style: bold;
     content-align: center middle;
+}
+
+ConfirmPositionDialog Button {
+    margin-top: 1;
+    width: 48%;
+    height: 5;
 }
 
 ConfirmPositionDialog #confirm{

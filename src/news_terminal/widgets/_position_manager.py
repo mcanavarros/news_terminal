@@ -10,7 +10,16 @@ from textual.containers import Horizontal
 from textual.reactive import reactive
 from textual.screen import events
 from textual.widget import Widget
-from textual.widgets import Button, Input, Label, ListItem, ListView, Static, TextLog
+from textual.widgets import (
+    Button,
+    Input,
+    Label,
+    ListItem,
+    ListView,
+    Static,
+    Switch,
+    TextLog,
+)
 
 from news_terminal._binance_trade import BinanceTrader
 from news_terminal.widgets._label_item import LabelItem
@@ -27,7 +36,6 @@ class PositionManager(Widget):
         classes: str | None = None,
     ) -> None:
         super().__init__(*children, name=name, id=id, classes=classes)
-        self.binance_trader = BinanceTrader(testnet=True)
         self.current_pair = ""
         self.open_long = Button(
             "OPEN LONG", variant="success", disabled=True, id="open_long"
@@ -36,8 +44,13 @@ class PositionManager(Widget):
             "OPEN SHORT", variant="error", disabled=True, id="open_short"
         )
         self.confirm_dialog = ConfirmPositionDialog()
+        self.testnet_switch = Switch(value=True, id="testnet_swtich")
+        self.testnet_switch.can_focus = False
+        self.update_holdings = Button("⟳", id="update_holdings")
+        self.update_holdings.can_focus = False
 
     def on_mount(self) -> None:
+        self.set_binance_trader(True)
         self.update_exchange_holdings()
 
     def compose(self) -> ComposeResult:
@@ -46,6 +59,7 @@ class PositionManager(Widget):
         yield Horizontal(
             Static("Current USDT:", classes="title", id="usdt_label"),
             Static("$0", classes="value", id="current_usdt"),
+            self.update_holdings,
         )
         yield Horizontal(
             Static("Bid:", classes="title", id="bid_label"),
@@ -70,6 +84,11 @@ class PositionManager(Widget):
             self.open_long,
             id="position_buttons",
         )
+        yield Horizontal(
+            Static("Trade on TESTNET: ", id="testnet_label"),
+            self.testnet_switch,
+            id="switch_container",
+        )
         yield TextLog(id="binance_log", wrap=False, markup=True, highlight=True)
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
@@ -89,6 +108,7 @@ class PositionManager(Widget):
                 f" size: {bid}, leverage: {current_leverage}"
             )
             self.confirm_dialog.confirm_func = long_partial
+            self.confirm_dialog.show(True)
         elif event.button.id == "open_short":
             short_partial = functools.partial(
                 self.binance_trader.create_leverage_trade,
@@ -103,7 +123,12 @@ class PositionManager(Widget):
                 f" size: {bid}, leverage: {current_leverage}"
             )
             self.confirm_dialog.confirm_func = short_partial
-        self.confirm_dialog.show(True)
+            self.confirm_dialog.show(True)
+        elif event.button.id == "update_holdings":
+            self.update_exchange_holdings()
+
+    def on_switch_changed(self, event: Switch.Changed) -> None:
+        self.set_binance_trader(testnet=event.value)
 
     def pair_selected(self, pair: str) -> None:
         self.open_long.disabled = False
@@ -122,6 +147,11 @@ class PositionManager(Widget):
         """Update exchange holdings"""
         holdings = str(self.binance_trader.get_futures_balance("USDT"))
         self.query_one("#current_usdt", Static).update(holdings)
+
+    def set_binance_trader(self, testnet: bool) -> None:
+        self.binance_trader = BinanceTrader(testnet=testnet)
+        self.log_binance(f"Initialized Binance trader with TESTNET: {testnet}")
+        self.update_exchange_holdings()
 
     def log_binance(self, renderable: RenderableType) -> None:
         self.query_one("#binance_log", TextLog).write(renderable)
