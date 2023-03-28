@@ -267,11 +267,11 @@ ConfirmPositionDialog Button {
 }
 
 ConfirmPositionDialog #confirm{
-    dock: left;
+    dock: right;
 }
 
 ConfirmPositionDialog #cancel{
-    dock: right;
+    dock: left;
 }
 
 
