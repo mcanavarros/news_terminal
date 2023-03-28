@@ -31,7 +31,8 @@ async def subscribe_to_wss(wss_queue: Queue, url: str) -> None:
             ) as e:
                 print(e)
                 break
-    await asyncio.sleep(1)
+    await asyncio.sleep(5)
+    print("Restarting connection")
     await subscribe_to_wss(wss_queue, url)
 
 
@@ -44,7 +45,10 @@ def _format_links_for_click(text):
 def _replace_with_click(match) -> str:
     """Replace the matched url with a click format."""
     url = match.group(0)
+    # Remove enclosings
     url = re.sub(r"[{}|^[\]`]", "", url)
+    # Remove everything after '
+    url = re.sub(r"'.*$", "", url)
     link = _nice_link_format(url)
     return f"[@click=app.open_link('{url}')]{link}[/]"
 

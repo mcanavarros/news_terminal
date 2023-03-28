@@ -212,8 +212,8 @@ class ConfirmPositionDialog(Widget):
     def compose(self) -> ComposeResult:
         yield Label(self.confirm_text, id="confirm_label")
         yield Horizontal(
-            Button("Confirm (Enter)", variant="success", id="confirm"),
             Button("Cancel (ESC)", variant="error", id="cancel"),
+            Button("Confirm (Enter)", variant="success", id="confirm"),
         )
 
     def watch_confirm_text(self, new_text) -> None:

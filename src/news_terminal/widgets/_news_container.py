@@ -53,60 +53,20 @@ class NewsContainer(Container):
             if isinstance(self.screen.focused, NewsContent):
                 content_query.first().focus()
 
-            if len(self.children) > 50:
+            if len(self.children) > 150:
                 await content_query.last().remove()
 
     def compose(self) -> ComposeResult:
         yield NewsContent(
             format_news_data(
                 {
-                    "title": "BeaultifulTest fasdf asdfasdfasdf adf adf adsf asdf asd fa dfasdf asdf asdf adf asdf 1 ",
-                    "url": "https://twitter.com/AnciliaInc/status/1634712824042905600",
-                    "body": """Test""",
-                    "type": "direct",
+                    "title": "News Terminal!",
+                    "url": "",
+                    "body": """Welcome to news terminal! <3""",
+                    "source": "Introduction",
                     "time": datetime.timestamp(datetime.now()) * 1000,
                     "coin": "BTC",
                     "_id": 1,
-                }
-            )
-        )
-        yield NewsContent(
-            format_news_data(
-                {
-                    "title": "BeaultifulTest fasdf asdfasdfasdf adf adf adsf asdf asd fa dfasdf asdf asdf adf asdf 1 ",
-                    "url": "https://twitter.com/AnciliaInc/status/1634712824042905600",
-                    "body": """Test""",
-                    "source": "twitter",
-                    "time": datetime.timestamp(datetime.now()) * 1000,
-                    "coin": "BTC",
-                    "_id": 1,
-                    "actions": [
-                        {
-                            "action": "BINFUT_ATOMUSDT",
-                            "title": "BTCUSDT PERP",
-                            "icon": "https://news.treeofalpha.com/static/images/binance_icon.png",
-                        },
-                    ],
-                }
-            )
-        )
-        yield NewsContent(
-            format_news_data(
-                {
-                    "title": "BeaultifulTest fasdf asdfasdfasdf adf adf adsf asdf asd fa dfasdf asdf asdf adf asdf 1 ",
-                    "url": "https://twitter.com/AnciliaInc/status/1634712824042905600",
-                    "body": """Test""",
-                    "source": "twitter",
-                    "time": datetime.timestamp(datetime.now()) * 1000,
-                    "coin": "BTC",
-                    "_id": 1,
-                    "actions": [
-                        {
-                            "action": "BINFUT_ATOMUSDT",
-                            "title": "BTCUSDT PERP",
-                            "icon": "https://news.treeofalpha.com/static/images/binance_icon.png",
-                        },
-                    ],
                 }
             )
         )
