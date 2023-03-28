@@ -47,10 +47,12 @@ def _replace_with_click(match) -> str:
     url = match.group(0)
     # Remove enclosings
     url = re.sub(r"[{}|^[\]`]", "", url)
-    # Remove everything after '
+    print(url)
+    # # Remove everything after '
     url = re.sub(r"'.*$", "", url)
+    print(url)
     link = _nice_link_format(url)
-    return f"[@click=app.open_link('{url}')]{link}[/]"
+    return f'[@click=app.open_link("{url}")]{link}[/]'
 
 
 def _nice_link_format(url):
@@ -123,7 +125,7 @@ def format_news_message(news_message: NewsData) -> NewsData:
 
     if news_message["link"]:
         _link = news_message["link"]
-        _link = f"[@click=app.open_link('{_link}')]{_nice_link_format(_link)}[/]"
+        _link = f'[@click=app.open_link("{_link}")]{_nice_link_format(_link)}[/]'
         news_message["link"] = _link
 
     if news_message["coin"]:
