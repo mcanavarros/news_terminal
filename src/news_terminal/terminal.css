@@ -68,7 +68,7 @@ ConfigPanel ListView {
 }
 
 #selection_display {
-    height: 15%;
+    height: 23%;
 }
 
 #price_tracker {
@@ -76,7 +76,7 @@ ConfigPanel ListView {
 }
 
 #buy_action {
-    height: 65%;
+    height: 57%;
 }
 
 
@@ -228,7 +228,7 @@ PositionManager #open_short {
 }
 
 PositionManager TextLog {
-    height: 50%;
+    height: 15%;
     border: tall $secondary;
 }
 
@@ -247,7 +247,7 @@ ConfirmPositionDialog {
     border: dashed $secondary;
     border-title-align: center;
     background: $accent-darken-3;
-    height: 20vh;
+    height: 30vh;
     padding: 3 5;
 }
 
