@@ -38,10 +38,10 @@ class PositionManager(Widget):
         super().__init__(*children, name=name, id=id, classes=classes)
         self.current_pair = ""
         self.open_long = Button(
-            "OPEN LONG", variant="success", disabled=True, id="open_long"
+            "OPEN LONG (K)", variant="success", disabled=True, id="open_long"
         )
         self.open_short = Button(
-            "OPEN SHORT", variant="error", disabled=True, id="open_short"
+            "OPEN SHORT (J)", variant="error", disabled=True, id="open_short"
         )
         self.confirm_dialog = ConfirmPositionDialog()
         self.testnet_switch = Switch(value=True, id="testnet_swtich")
@@ -104,8 +104,8 @@ class PositionManager(Widget):
                 int(current_leverage),
             )
             self.confirm_dialog.confirm_text = "".join(
-                f"Open LONG position {self.current_pair},"
-                f" size: {bid}, leverage: {current_leverage}"
+                f"[bold]LONG[/bold] position [black]{self.current_pair}[/black],"
+                f" size: [black]{bid}[/black], leverage: [black]{current_leverage}[/black]"
             )
             self.confirm_dialog.confirm_func = long_partial
             self.confirm_dialog.show(True)
@@ -119,7 +119,7 @@ class PositionManager(Widget):
                 int(current_leverage),
             )
             self.confirm_dialog.confirm_text = "".join(
-                f"Open SHORT position {self.current_pair},"
+                f"[bold]SHORT[/bold] position {self.current_pair},"
                 f" size: {bid}, leverage: {current_leverage}"
             )
             self.confirm_dialog.confirm_func = short_partial

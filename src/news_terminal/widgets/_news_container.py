@@ -53,7 +53,7 @@ class NewsContainer(Container):
             if isinstance(self.screen.focused, NewsContent):
                 content_query.first().focus()
 
-            if len(self.children) > 150:
+            if len(self.children) > 25:
                 await content_query.last().remove()
 
     def compose(self) -> ComposeResult:
