@@ -47,10 +47,6 @@ def _replace_with_click(match) -> str:
     url = match.group(0)
     # Remove enclosings
     url = re.sub(r"[{}|^[\]`]", "", url)
-    print(url)
-    # # Remove everything after '
-    url = re.sub(r"'.*$", "", url)
-    print(url)
     link = _nice_link_format(url)
     return f'[@click=app.open_link("{url}")]{link}[/]'
 

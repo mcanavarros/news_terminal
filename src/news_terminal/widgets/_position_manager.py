@@ -104,8 +104,8 @@ class PositionManager(Widget):
                 int(current_leverage),
             )
             self.confirm_dialog.confirm_text = "".join(
-                f"[bold]LONG[/bold] position [black]{self.current_pair}[/black],"
-                f" size: [black]{bid}[/black], leverage: [black]{current_leverage}[/black]"
+                f"[bold]LONG[/bold] position [bold black]{self.current_pair}[/bold black],"
+                f" size: [bold black]{bid}[/bold black], leverage: [bold black]{current_leverage}[/bold black]"
             )
             self.confirm_dialog.confirm_func = long_partial
             self.confirm_dialog.show(True)
@@ -119,8 +119,8 @@ class PositionManager(Widget):
                 int(current_leverage),
             )
             self.confirm_dialog.confirm_text = "".join(
-                f"[bold]SHORT[/bold] position {self.current_pair},"
-                f" size: {bid}, leverage: {current_leverage}"
+                f"[bold]SHORT[/bold] position [bold black]{self.current_pair}[/bold black],"
+                f" size: [bold black]{bid}[/bold black], leverage: [bold black]{current_leverage}[/bold black]"
             )
             self.confirm_dialog.confirm_func = short_partial
             self.confirm_dialog.show(True)
