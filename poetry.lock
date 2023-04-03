@@ -1520,14 +1520,14 @@ files = [
 
 [[package]]
 name = "textual"
-version = "0.17.0"
+version = "0.17.3"
 description = "Modern Text User Interface framework"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "textual-0.17.0-py3-none-any.whl", hash = "sha256:f74fd264f5dcf348a1850041908263e2d07071733dc80a70405dfd155b50d2ec"},
-    {file = "textual-0.17.0.tar.gz", hash = "sha256:6ddaf850e716886bfd87f9ff8a42d480b0af8de6c2cb16b28fcb7d3f1b5df1ec"},
+    {file = "textual-0.17.3-py3-none-any.whl", hash = "sha256:b9808fb3427d786a26db8723fdfd78c9a34f9a528f412920daafe8af9fc6a5a9"},
+    {file = "textual-0.17.3.tar.gz", hash = "sha256:e9f5f7d740ce592974580679e46230e85b56a568203a80dcfbbc1a4159c1f2a6"},
 ]
 
 [package.dependencies]
@@ -1544,19 +1544,23 @@ dev = ["aiohttp (>=3.8.1)", "click (>=8.1.2)", "msgpack (>=1.0.3)"]
 
 [[package]]
 name = "textual-autocomplete"
-version = "2.1.0b0"
+version = "2.0.1b0"
 description = "Easily add autocomplete dropdowns to your Textual apps."
 category = "main"
 optional = false
-python-versions = ">=3.7.8,<4.0.0"
-files = [
-    {file = "textual_autocomplete-2.1.0b0-py3-none-any.whl", hash = "sha256:40a7b2e09f115465de7e339bcee4dc16f03c1e43781ee3aaf5c44f65822a5861"},
-    {file = "textual_autocomplete-2.1.0b0.tar.gz", hash = "sha256:ba31da6e9b77e4c35323c267f958f0b90e1c2ddeca9c825c7d6c29d4d33893ce"},
-]
+python-versions = "^3.7.8"
+files = []
+develop = false
 
 [package.dependencies]
 textual = ">=0.14.0"
-typing-extensions = ">=4.5.0,<5.0.0"
+typing-extensions = "^4.5.0"
+
+[package.source]
+type = "git"
+url = "https://github.com/UmBsublime/textual-autocomplete"
+reference = "textual_v0.14.0_compat"
+resolved_reference = "b7e676d5d295159e9e2c8c91d3f0537489b7ffce"
 
 [[package]]
 name = "tweepy"
@@ -1996,4 +2000,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "c2c58142d8b07411311ef48482ae8ac936682ea24fa1f0e779d2728ec1d29e46"
+content-hash = "61b5ca793ad7051159851613d0f2c0976163442b1e6d34d7ba1b8dc777388ebf"
