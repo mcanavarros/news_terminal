@@ -90,6 +90,7 @@ class NewsTerminalApp(App):
 
     def subscribe_to_action(self, pair: str) -> None:
         self.query_one(PositionManager).pair_selected(pair)
+        self.query_one(PositionManager).update_binance_leverage()
         self.query_one(PriceTracker).subscribe_to_action(pair)
 
     def log_binance(self, renderable: RenderableType) -> None:

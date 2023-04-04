@@ -130,6 +130,22 @@ class PositionManager(Widget):
     def on_switch_changed(self, event: Switch.Changed) -> None:
         self.set_binance_trader(testnet=event.value)
 
+    def on_list_view_highlighted(self, event: ListView.Highlighted) -> None:
+        if not self.current_pair:
+            return
+        self.update_binance_leverage()
+
+    def update_binance_leverage(self) -> None:
+        pair = self.current_pair.split(" ")[0].strip()
+        current_leverage = int(self.query_one(RadioBox).highlighted_child.text)  # type: ignore
+        leverage_change = self.binance_trader.change_leverage(
+            symbol=pair, leverage=current_leverage
+        )
+        leverage_change["maxNotionalValue"] = (
+            int(leverage_change["maxNotionalValue"]) / current_leverage
+        )
+        self.log_binance(leverage_change)  # type: ignore
+
     def pair_selected(self, pair: str) -> None:
         self.open_long.disabled = False
         self.open_short.disabled = False
@@ -234,7 +250,6 @@ class ConfirmPositionDialog(Widget):
 
     def _confirm(self) -> None:
         if self.confirm_func:
-            print(datetime.now())
             value = self.confirm_func()
             buy_time = datetime.fromtimestamp(value["updateTime"] / 1000)
             value["buyTime"] = buy_time.strftime("%H:%M:%S:%f")

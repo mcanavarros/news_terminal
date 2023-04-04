@@ -41,6 +41,9 @@ class BinanceTrader(object):
                 token_balance = Decimal(check_balance["balance"])
         return token_balance
 
+    def change_leverage(self, symbol: str, leverage: int) -> dict:
+        return self.client.futures_change_leverage(symbol=symbol, leverage=leverage)
+
     def get_price(self, symbol: str) -> Decimal:
         """Get price of the given symbol."""
         token_price = self.client.futures_mark_price(symbol=symbol)
