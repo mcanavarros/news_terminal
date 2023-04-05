@@ -2,6 +2,7 @@
 from decimal import Decimal
 
 from binance.client import Client
+from binance.exceptions import BinanceAPIException
 from binance.helpers import round_step_size
 
 from news_terminal.config import (
@@ -42,7 +43,10 @@ class BinanceTrader(object):
         return token_balance
 
     def change_leverage(self, symbol: str, leverage: int) -> dict:
-        return self.client.futures_change_leverage(symbol=symbol, leverage=leverage)
+        try:
+            return self.client.futures_change_leverage(symbol=symbol, leverage=leverage)
+        except BinanceAPIException:
+            return {}
 
     def get_price(self, symbol: str) -> Decimal:
         """Get price of the given symbol."""

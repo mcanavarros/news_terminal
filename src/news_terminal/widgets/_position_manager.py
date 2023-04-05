@@ -141,6 +141,10 @@ class PositionManager(Widget):
         leverage_change = self.binance_trader.change_leverage(
             symbol=pair, leverage=current_leverage
         )
+        if not leverage_change:
+            self.reduce_leverage()
+            return
+
         leverage_change["maxNotionalValue"] = (
             int(leverage_change["maxNotionalValue"]) / current_leverage
         )
