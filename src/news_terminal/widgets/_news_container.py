@@ -2,6 +2,7 @@
 import asyncio
 from datetime import datetime
 
+from textual import work
 from textual.app import ComposeResult, events
 from textual.containers import Container, Horizontal, Vertical
 from textual.message import Message
@@ -36,11 +37,12 @@ class NewsContainer(Container):
         self._task_list["subscribe_to_wss"] = asyncio.create_task(
             subscribe_to_wss(self.news_queue, "news.treeofalpha.com/ws")
         )
-        self._task_list["subscribe_to_news_stream"] = asyncio.create_task(
-            subscribe_to_news_stream(self.news_queue)
-        )
-        self._task_list["add_new_entry"] = asyncio.create_task(self._add_new_entry())
+        # self._task_list["subscribe_to_news_stream"] = asyncio.create_task(
+        #     subscribe_to_news_stream(self.news_queue)
+        # )
+        self._add_new_entry()
 
+    @work
     async def _add_new_entry(self) -> None:
         while True:
             json_msg = await self.news_queue.get()

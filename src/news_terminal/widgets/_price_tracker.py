@@ -1,5 +1,6 @@
 """Module with a widget to watch prices"""
 import asyncio
+from textual import work
 
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
@@ -49,7 +50,7 @@ class PriceTracker(Widget):
 
     def on_mount(self) -> None:
         self.clear_values()
-        asyncio.create_task(self._update_values())
+        self._update_values()
 
     def subscribe_to_action(self, market: str) -> None:
         if market.endswith("PERP"):
@@ -75,6 +76,7 @@ class PriceTracker(Widget):
         self.query_one("#m5_change", Static).update("--")
         self.query_one("#m15_change", Static).update("--")
 
+    @work(exclusive=True)
     async def _update_values(self):
 
         price_label = self.query_one("#price_value", Static)
