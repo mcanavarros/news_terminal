@@ -6,7 +6,7 @@ from typing import Callable
 
 from rich.console import RenderableType
 from textual.app import ComposeResult
-from textual.containers import Horizontal
+from textual.containers import Container, Horizontal
 from textual.reactive import reactive
 from textual.screen import events
 from textual.widget import Widget
@@ -89,7 +89,9 @@ class PositionManager(Widget):
             self.testnet_switch,
             id="switch_container",
         )
-        yield TextLog(id="binance_log", wrap=False, markup=True, highlight=True)
+        yield Container(
+            TextLog(id="binance_log", wrap=False, markup=True, highlight=True)
+        )
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         current_leverage = self.query_one(RadioBox).highlighted_child.text  # type: ignore

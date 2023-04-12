@@ -7,7 +7,6 @@ Screen {
 TextLog {
     background: $surface;
     color: $text;
-    height: 20vh;
     dock: bottom;
     layer: above;
     border-top: tall $primary;
@@ -16,6 +15,10 @@ TextLog {
     offset-y: 0;
     transition: offset 400ms in_out_cubic;
     padding: 0 1 1 1;
+}
+
+TextLog #news_log{
+    height: 20vh;
 }
 
 TextLog:focus {
@@ -228,7 +231,6 @@ PositionManager #open_short {
 }
 
 PositionManager TextLog {
-    height: 15%;
     border: tall $secondary;
 }
 
@@ -275,7 +277,6 @@ ConfirmPositionDialog #cancel{
 }
 
 
-
 NewsContent {
     height: auto;
     margin: 1 2;
@@ -306,7 +307,6 @@ NewsContent #title {
     width: 80%;
 }
 
-
 NewsContent #body {
     padding: 1 0;
     width: 75%;
@@ -324,7 +324,6 @@ NewsContent #coin {
     content-align: right middle;
     width: 40%;
 }
-
 
 NewsContent #delay{
     text-style: italic;
